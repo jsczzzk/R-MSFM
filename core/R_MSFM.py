@@ -55,7 +55,7 @@ class SepConvGRU(nn.Module):
 
 
 class R_MSFM3(nn.Module):
-    def __init__(self):
+    def __init__(self, x):
         super(R_MSFM3, self).__init__()
 
         self.convX11 = torch.nn.Sequential(
@@ -64,25 +64,30 @@ class R_MSFM3(nn.Module):
             torch.nn.LeakyReLU(inplace=True),
             nn.ReflectionPad2d(1),
             torch.nn.Conv2d(in_channels=96, out_channels=128, kernel_size=3, stride=2, padding=0, bias=True),
-            torch.nn.Tanh()).cuda()
-
-        self.convX21 = torch.nn.Sequential(
-            nn.ReflectionPad2d(1),
-            torch.nn.Conv2d(in_channels=64, out_channels=128, kernel_size=3, stride=2, padding=0, bias=True),
-            torch.nn.Tanh()).cuda()
-
-        self.gruc = SepConvGRU()
-
-        self.convX31 = torch.nn.Sequential(
-            nn.ReflectionPad2d(1),
-            torch.nn.Conv2d(in_channels=128, out_channels=128, kernel_size=3, stride=1, padding=0, dilation=1,
-                            bias=True),
-            torch.nn.Tanh()).cuda()
+            torch.nn.Tanh())
+        if x:  
+            self.convX21 = torch.nn.Sequential(
+                nn.ReflectionPad2d(1),
+                torch.nn.Conv2d(in_channels=256, out_channels=128, kernel_size=3, stride=2, padding=0, bias=True),
+                torch.nn.Tanh())
+            self.convX31 = torch.nn.Sequential(
+                nn.ReflectionPad2d(1),
+                torch.nn.Conv2d(in_channels=512, out_channels=128, kernel_size=3, stride=1, padding=0, bias=True),
+                torch.nn.Tanh())
+        else:
+            self.convX21 = torch.nn.Sequential(
+                nn.ReflectionPad2d(1),
+                torch.nn.Conv2d(in_channels=64, out_channels=128, kernel_size=3, stride=2, padding=0, bias=True),
+                torch.nn.Tanh())
+            self.convX31 = torch.nn.Sequential(
+                nn.ReflectionPad2d(1),
+                torch.nn.Conv2d(in_channels=128, out_channels=128, kernel_size=3, stride=1, padding=0, bias=True),
+                torch.nn.Tanh())
 
         self.sigmoid = nn.Sigmoid()
 
         self.update_block = BasicUpdateBlock()
-
+        self.gruc = SepConvGRU()
     def upsample_depth(self, flow, mask):
         """ Upsample depth field [H/8, W/8, 2] -> [H, W, 2] using convex combination """
         N, _, H, W = flow.shape
@@ -136,7 +141,7 @@ class R_MSFM3(nn.Module):
 
 
 class R_MSFM6(nn.Module):
-    def __init__(self):
+    def __init__(self,x):
         super(R_MSFM6, self).__init__()
 
         self.convX11 = torch.nn.Sequential(
@@ -145,41 +150,51 @@ class R_MSFM6(nn.Module):
             torch.nn.LeakyReLU(inplace=True),
             nn.ReflectionPad2d(1),
             torch.nn.Conv2d(in_channels=96, out_channels=128, kernel_size=3, stride=2, padding=0, bias=True),
-            torch.nn.Tanh()).cuda()
+            torch.nn.Tanh())
 
         self.convX12 = torch.nn.Sequential(
             nn.Conv2d(128, 128, (1, 3), padding=(0, 1)),
             torch.nn.Tanh(),
             nn.Conv2d(128, 128, (3, 1), padding=(1, 0)),
-            torch.nn.Tanh()).cuda()
+            torch.nn.Tanh())
 
-        self.convX21 = torch.nn.Sequential(
-            nn.ReflectionPad2d(1),
-            torch.nn.Conv2d(in_channels=64, out_channels=128, kernel_size=3, stride=2, padding=0, bias=True),
-            torch.nn.Tanh()).cuda()
+
+        if x:
+            self.convX21 = torch.nn.Sequential(
+                nn.ReflectionPad2d(1),
+                torch.nn.Conv2d(in_channels=256, out_channels=128, kernel_size=3, stride=2, padding=0, bias=True),
+                torch.nn.Tanh())
+            self.convX31 = torch.nn.Sequential(
+                nn.ReflectionPad2d(1),
+                torch.nn.Conv2d(in_channels=512, out_channels=128, kernel_size=3, stride=1, padding=0, bias=True),
+                torch.nn.Tanh())
+        else:
+            self.convX21 = torch.nn.Sequential(
+                nn.ReflectionPad2d(1),
+                torch.nn.Conv2d(in_channels=64, out_channels=128, kernel_size=3, stride=2, padding=0, bias=True),
+                torch.nn.Tanh())
+            self.convX31 = torch.nn.Sequential(
+                nn.ReflectionPad2d(1),
+                torch.nn.Conv2d(in_channels=128, out_channels=128, kernel_size=3, stride=1, padding=0, dilation=1,
+                                bias=True),
+                torch.nn.Tanh())
+
+
 
         self.convX22 = torch.nn.Sequential(
             nn.Conv2d(128, 128, (1, 3), padding=(0, 1)),
             torch.nn.Tanh(),
             nn.Conv2d(128, 128, (3, 1), padding=(1, 0)),
-            torch.nn.Tanh()).cuda()
-
-        self.gruc = SepConvGRU()
-
-        self.convX31 = torch.nn.Sequential(
-            nn.ReflectionPad2d(1),
-            torch.nn.Conv2d(in_channels=128, out_channels=128, kernel_size=3, stride=1, padding=0, dilation=1,
-                            bias=True),
-            torch.nn.Tanh()).cuda()
+            torch.nn.Tanh())
 
         self.convX32 = torch.nn.Sequential(
             nn.Conv2d(128, 128, (1, 3), padding=(0, 1)),
             torch.nn.Tanh(),
             nn.Conv2d(128, 128, (3, 1), padding=(1, 0)),
-            torch.nn.Tanh()).cuda()
+            torch.nn.Tanh())
 
         self.sigmoid = nn.Sigmoid()
-
+        self.gruc = SepConvGRU()
         self.update_block = BasicUpdateBlock()
 
     def upsample_depth(self, flow, mask):
