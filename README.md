@@ -8,7 +8,7 @@ This is the official implementation for testing depth estimation using the model
 R-MSFM can estimate a depth map from a single image.
 
 Paper is now available at [ICCV2021](https://openaccess.thecvf.com/content/ICCV2021/papers/Zhou_R-MSFM_Recurrent_Multi-Scale_Feature_Modulation_for_Monocular_Depth_Estimating_ICCV_2021_paper.pdf)
-## Improved version
+## Improved Version
 
 In the coming extended paper, we improve our R-MSFM from two aspects and achieve the SOTA result.
 1.  We propose another lightweight convolutional network R-MSFMX that evolved from our R-MSFM to better address the problem of depth estimation. Our R-MSFMX takes the first three blocks from ResNet50 instead of ResNet18 in our R-MSFM and  further improves the depth accuracy.
@@ -29,7 +29,7 @@ The rows (from up to bottom) are RGB images, and the results by [Monodepth2](htt
 
 
 
-## Precomputed results
+## Precomputed Results
 We have updated all the results as follows:
 [results](https://drive.google.com/drive/folders/1xLglsHFVxxTlvj5UBEyK5MQ_D0dLIjbS?usp=sharing)
 
@@ -37,7 +37,7 @@ We have updated all the results as follows:
 We have updated all the results as follows:
 [models](https://drive.google.com/drive/folders/1IhUsEEY-oKfgcsTX2uHuENMe7u-1Pzik?usp=sharing)
 
-## KITTI evaluation
+## KITTI Evaluation
 You can predict scaled disparity for a single image used R-MSFM3 with:
 ```shell
 python test_simple.py --image_path='path_to_image' --model_path='path_to_model' --update=3
