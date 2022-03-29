@@ -23,7 +23,7 @@ The rows (from up to bottom) are RGB images, and the results by [Monodepth2](htt
 
 ## R-MSFM Results
 ![image](https://user-images.githubusercontent.com/32475718/160614132-3e7d25cc-e3d2-4d63-a2de-4fcaf10ef04e.png)
-
+## R-MSFMX Results
 ![image](https://user-images.githubusercontent.com/32475718/160614092-b0f11c9b-e050-4481-a2a3-2e06d714428e.png)
 
 
