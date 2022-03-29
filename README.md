@@ -42,9 +42,17 @@ You can predict scaled disparity for a single image used R-MSFM3 with:
 ```shell
 python test_simple.py --image_path='path_to_image' --model_path='path_to_model' --update=3
 ```
+or R-MSFMX3 with
+```shell
+python test_simple.py --image_path='path_to_image' --model_path='path_to_model' --update=3 --x
+```
 or R-MSFM6 with:
 ```shell
 python test_simple.py --image_path='path_to_image' --model_path='path_to_model' --update=6
+```
+or R-MSFM6X with:
+```shell
+python test_simple.py --image_path='path_to_image' --model_path='path_to_model' --update=6 --x
 ```
 ## License & Acknowledgement
 The codes are based on [RAFT](https://github.com/princeton-vl/RAFT), [Monodepth2](https://github.com/nianticlabs/monodepth2). Please also follow their licenses. Thanks for their great works.
