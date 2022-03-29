@@ -34,7 +34,7 @@ def parse_args():
                         help='path to a test image or folder of images', required=True)
 
     parser.add_argument('--ext', type=str,
-                        help='image extension to search for in folder', default="jpg")
+                        help='image extension to search for in folder', default="jpeg")
     parser.add_argument('--model_path', type=str,
                         help='path to a models.pth', default="./3M")
     parser.add_argument('--update', type=int,
@@ -42,7 +42,10 @@ def parse_args():
     parser.add_argument("--no_cuda",
                         help='if set, disables CUDA',
                         action='store_true')
-    # a = ['--image_path', './a']
+    parser.add_argument("--x",
+                        help='if set, R-MSFMX',
+                        action='store_true')
+    # a = ['--image_path', './a',  '--model_path',  './3M_gc_1024',  '--update', '3' ]
     return parser.parse_args()
 
 
@@ -63,19 +66,24 @@ def test_simple(args):
     encoder_path = os.path.join(model_path, "encoder.pth")
     depth_decoder_path = os.path.join(model_path, "depth.pth")
 
+
+
     # LOADING PRETRAINED MODEL
     print("   Loading pretrained encoder")
-    encoder = networks.ResnetEncoder(18, False)
-    encoder .load_state_dict(torch.load(encoder_path),False)
+    if args.x:
+        encoder = networks.ResnetEncoder(50, False)
+    else:
+        encoder = networks.ResnetEncoder(18, False)
+    encoder .load_state_dict(torch.load(encoder_path, map_location= device),False)
     encoder.to(device)
     encoder.eval()
 
     print("   Loading pretrained decoder")
     if args.update == 3:
-        depth_decoder = R_MSFM3()
+        depth_decoder = R_MSFM3(args.x)
     else:
-        depth_decoder = R_MSFM6()
-    depth_decoder.load_state_dict(torch.load(depth_decoder_path))
+        depth_decoder = R_MSFM6(args.x)
+    depth_decoder.load_state_dict(torch.load(depth_decoder_path, map_location= device))
     depth_decoder.to(device)
     depth_decoder.eval()
 
@@ -150,3 +158,4 @@ def test_simple(args):
 if __name__ == '__main__':
     args = parse_args()
     test_simple(args)
+
