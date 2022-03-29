@@ -33,7 +33,7 @@ The rows (from up to bottom) are RGB images, and the results by [Monodepth2](htt
 We have updated all the results as follows:
 [results](https://drive.google.com/drive/folders/1xLglsHFVxxTlvj5UBEyK5MQ_D0dLIjbS?usp=sharing)
 
-## Pretrained Model
+## Pretrained Models
 We have updated all the results as follows:
 [models](https://drive.google.com/drive/folders/1IhUsEEY-oKfgcsTX2uHuENMe7u-1Pzik?usp=sharing)
 
