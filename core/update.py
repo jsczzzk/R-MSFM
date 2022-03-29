@@ -48,11 +48,11 @@ class dispHead(nn.Module):
         self.covd1 = torch.nn.Sequential(nn.ReflectionPad2d(1),
                                          torch.nn.Conv2d(in_channels=192, out_channels=256, kernel_size=3, stride=1,
                                                          padding=0, bias=True),
-                                         torch.nn.LeakyReLU(inplace=True)).cuda()
+                                         torch.nn.LeakyReLU(inplace=True))
 
         self.covd2 = torch.nn.Sequential(nn.ReflectionPad2d(1),
                                          torch.nn.Conv2d(in_channels=256, out_channels=outD, kernel_size=3, stride=1,
-                                                         padding=0, bias=True)).cuda()
+                                                         padding=0, bias=True))
 
     def forward(self, x):
         return self.covd2(self.covd1(x))
@@ -110,3 +110,4 @@ class BasicUpdateBlock(nn.Module):
         mask = .25 * self.mask(net)
 
         return net, mask, delta_depth
+
