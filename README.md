@@ -18,7 +18,7 @@ We show the superiority of our R-MSFMX-GC as follows:
 ![4](https://user-images.githubusercontent.com/32475718/160613575-a924c751-7352-4429-87ff-c6f6bcc19c44.jpg)
 
 
-The rows (from up to bottom) are RGB images, and the results by Monodepth2(https://github.com/nianticlabs/monodepth2), R-MSFM6, and the improved version R-MSFMX6-GC.
+The rows (from up to bottom) are RGB images, and the results by [Monodepth2](https://github.com/nianticlabs/monodepth2), R-MSFM6, and the improved version R-MSFMX6-GC.
 
 
 ## R-MSFM Results
