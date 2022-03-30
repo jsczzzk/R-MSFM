@@ -8,6 +8,8 @@ This is the official implementation for testing depth estimation using the model
 R-MSFM can estimate a depth map from a single image.
 
 Paper is now available at [ICCV2021](https://openaccess.thecvf.com/content/ICCV2021/papers/Zhou_R-MSFM_Recurrent_Multi-Scale_Feature_Modulation_for_Monocular_Depth_Estimating_ICCV_2021_paper.pdf)
+
+We will update the training code in the future, if there is any problem before then, please contact us.
 ## Improved Version
 
 In the coming extended paper, we improve our R-MSFM from two aspects and achieve the SOTA result.
