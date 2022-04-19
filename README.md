@@ -10,17 +10,6 @@ R-MSFM can estimate a depth map from a single image.
 Paper is now available at [ICCV2021](https://openaccess.thecvf.com/content/ICCV2021/papers/Zhou_R-MSFM_Recurrent_Multi-Scale_Feature_Modulation_for_Monocular_Depth_Estimating_ICCV_2021_paper.pdf)
 
 We will update the training code in the future, if there is any problem before then, please contact us.
-## Improved Version
-
-In the coming extended paper, we improve our R-MSFM from two aspects and achieve the SOTA result.
-1.  We propose another lightweight convolutional network R-MSFMX that evolved from our R-MSFM to better address the problem of depth estimation. Our R-MSFMX takes the first three blocks from ResNet50 instead of ResNet18 in our R-MSFM and  further improves the depth accuracy.
-2.  We promote the geometry consistent depth learning for both our R-MSFM and R-MSFMX, which prevents the depth artifacts at object borders and thus generates more consistent depth. We denote the models that perform geometry consistent depth estimation by the postfix (GC).
-
-We show the superiority of our R-MSFMX-GC as follows:
-![4](https://user-images.githubusercontent.com/32475718/160613575-a924c751-7352-4429-87ff-c6f6bcc19c44.jpg)
-
-
-The rows (from up to bottom) are RGB images, and the results by [Monodepth2](https://github.com/nianticlabs/monodepth2), R-MSFM6, and the improved version R-MSFMX6-GC.
 
 
 ## R-MSFM Results
