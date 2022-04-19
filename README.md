@@ -12,10 +12,7 @@ Paper is now available at [ICCV2021](https://openaccess.thecvf.com/content/ICCV2
 We will update the training code in the future, if there is any problem before then, please contact us.
 
 
-## R-MSFM Results
-![image](https://user-images.githubusercontent.com/32475718/160614132-3e7d25cc-e3d2-4d63-a2de-4fcaf10ef04e.png)
-## R-MSFMX Results
-![image](https://user-images.githubusercontent.com/32475718/160617371-50e304c0-1266-4ccc-afb7-524231c43bcf.png)
+
 
 
 
@@ -33,17 +30,11 @@ You can predict scaled disparity for a single image used R-MSFM3 with:
 ```shell
 python test_simple.py --image_path='path_to_image' --model_path='path_to_model' --update=3
 ```
-or R-MSFMX3 with
-```shell
-python test_simple.py --image_path='path_to_image' --model_path='path_to_model' --update=3 --x
-```
+
 or R-MSFM6 with:
 ```shell
 python test_simple.py --image_path='path_to_image' --model_path='path_to_model' --update=6
 ```
-or R-MSFM6X with:
-```shell
-python test_simple.py --image_path='path_to_image' --model_path='path_to_model' --update=6 --x
-```
+
 ## License & Acknowledgement
 The codes are based on [RAFT](https://github.com/princeton-vl/RAFT), [Monodepth2](https://github.com/nianticlabs/monodepth2). Please also follow their licenses. Thanks for their great works.
