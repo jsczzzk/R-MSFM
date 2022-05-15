@@ -10,7 +10,7 @@ Paper is now available at [ICCV2021](https://openaccess.thecvf.com/content/ICCV2
 We will update the training code in the future, if there is any problem before then, please contact us.
 ## Improved Version
 
-In the coming extended paper, we improve our R-MSFM from two aspects and achieve the SOTA result.
+In the coming extended paper, we improve our R-MSFM from two aspects and achieve SOTA results.
 1.  We propose another lightweight convolutional network R-MSFMX that evolved from our R-MSFM to better address the problem of depth estimation. Our R-MSFMX takes the first three blocks from ResNet50 instead of ResNet18 in our R-MSFM and  further improves the depth accuracy.
 2.  We promote the geometry consistent depth learning for both our R-MSFM and R-MSFMX, which prevents the depth artifacts at object borders and thus generates more consistent depth. We denote the models that perform geometry consistent depth estimation by the postfix (GC).
 
