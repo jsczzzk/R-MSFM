@@ -8,7 +8,7 @@ R-MSFM can estimate a depth map from a single image.
 Paper is now available at [ICCV2021](https://openaccess.thecvf.com/content/ICCV2021/papers/Zhou_R-MSFM_Recurrent_Multi-Scale_Feature_Modulation_for_Monocular_Depth_Estimating_ICCV_2021_paper.pdf)
 
 ## Training code
-We will update the training code in the future, if there is any problem before then, please contact us. In addition, you can also refer to this [project](https://github.com/nianticlabs/monodepth2) for the training code, which achieves better results than mine. Thank you for his nice code!
+We will update the training code in the future, if there is any problem before then, please contact us. In addition, you can also refer to this [project](https://github.com/ZM-Zhou/SMDE-Pytorch) for the training code, which achieves better results than mine. Thank you for his nice code!
 
 ## Improved Version
 
