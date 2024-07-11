@@ -10,8 +10,8 @@ Paper is now available at [ICCV2021](https://openaccess.thecvf.com/content/ICCV2
 ## Training code
 We will update the training code in the future, if there is any problem before then, please contact us. In addition, you can also refer to this [project](https://github.com/ZM-Zhou/SMDE-Pytorch) for the training code, which achieves better results than mine. Thank you for his nice code!
 
-## Improved Version
-
+## Improved Version(T-PAMI2024)
+Paper is now available at [T-PAMI2024]([https://openaccess.thecvf.com/content/ICCV2021/papers/Zhou_R-MSFM_Recurrent_Multi-Scale_Feature_Modulation_for_Monocular_Depth_Estimating_ICCV_2021_paper.pdf](https://ieeexplore.ieee.org/abstract/document/10574331))
 In the coming extended paper, we improve our R-MSFM from two aspects and achieve SOTA results.
 1.  We propose another lightweight convolutional network R-MSFMX that evolved from our R-MSFM to better address the problem of depth estimation. Our R-MSFMX takes the first three blocks from ResNet50 instead of ResNet18 in our R-MSFM and  further improves the depth accuracy.
 2.  We promote the geometry consistent depth learning for both our R-MSFM and R-MSFMX, which prevents the depth artifacts at object borders and thus generates more consistent depth. We denote the models that perform geometry consistent depth estimation by the postfix (GC).
