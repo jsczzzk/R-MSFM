@@ -107,7 +107,7 @@ class R_MSFM3(nn.Module):
 
         for itr in range(iters):
             if itr in [0]:
-                corr = self.convX31(x3)#0，先对x3操作
+                corr = self.convX31(x3)
             elif itr in [1]:
                 corrh = corr
                 corr = self.convX21(x2)
