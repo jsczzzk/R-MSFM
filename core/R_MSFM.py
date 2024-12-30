@@ -19,9 +19,6 @@ except:
             pass
 
 
-
-
-
 class SepConvGRU(nn.Module):
     def __init__(self):
         super(SepConvGRU, self).__init__()
@@ -57,7 +54,6 @@ class SepConvGRU(nn.Module):
 class R_MSFM3(nn.Module):
     def __init__(self, x):
         super(R_MSFM3, self).__init__()
-
         self.convX11 = torch.nn.Sequential(
             nn.ReflectionPad2d(1),
             torch.nn.Conv2d(in_channels=64, out_channels=96, kernel_size=3, stride=2, padding=0, bias=True),
@@ -65,6 +61,7 @@ class R_MSFM3(nn.Module):
             nn.ReflectionPad2d(1),
             torch.nn.Conv2d(in_channels=96, out_channels=128, kernel_size=3, stride=2, padding=0, bias=True),
             torch.nn.Tanh())
+
         if x:  
             self.convX21 = torch.nn.Sequential(
                 nn.ReflectionPad2d(1),
@@ -83,13 +80,12 @@ class R_MSFM3(nn.Module):
                 nn.ReflectionPad2d(1),
                 torch.nn.Conv2d(in_channels=128, out_channels=128, kernel_size=3, stride=1, padding=0, bias=True),
                 torch.nn.Tanh())
-
+            
         self.sigmoid = nn.Sigmoid()
-
         self.update_block = BasicUpdateBlock()
         self.gruc = SepConvGRU()
+
     def upsample_depth(self, flow, mask):
-        """ Upsample depth field [H/8, W/8, 2] -> [H, W, 2] using convex combination """
         N, _, H, W = flow.shape
         mask = mask.view(N, 1, 9, 8, 8, H, W)
         mask = torch.softmax(mask, dim=2)
@@ -102,10 +98,8 @@ class R_MSFM3(nn.Module):
         return up_flow.reshape(N, 1, 8 * H, 8 * W)
 
     def forward(self, features, iters=3):
-        """ Estimate depth for a single image """
 
         x1, x2, x3 = features
-
         disp_predictions = {}
         b, c, h, w = x3.shape
         dispFea = torch.zeros([b, 1, h, w], requires_grad=True).to(x1.device)

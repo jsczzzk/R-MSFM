@@ -21,8 +21,7 @@ class ResNetMultiImageInput(models.ResNet):
     def __init__(self, block, layers, num_classes=1000, num_input_images=1):
         super(ResNetMultiImageInput, self).__init__(block, layers)
         self.inplanes = 64
-        self.conv1 = nn.Conv2d(
-            num_input_images * 3, 64, kernel_size=7, stride=2, padding=3, bias=False)
+        self.conv1 = nn.Conv2d(num_input_images * 3, 64, kernel_size=7, stride=2, padding=3, bias=False)
         self.bn1 = nn.BatchNorm2d(64)
         self.relu = nn.ReLU(inplace=True)
         self.maxpool = nn.MaxPool2d(kernel_size=3, stride=2, padding=1)
@@ -58,21 +57,17 @@ def resnet_multiimage_input(num_layers, pretrained=False, num_input_images=1):
         model.load_state_dict(loaded)
     return model
 
-
+#encoder = networks.ResnetEncoder(18, False)
+#features = encoder(input_image)
 class ResnetEncoder(nn.Module):
-    """Pytorch module for a resnet encoder
-    """
     def __init__(self, num_layers, pretrained, num_input_images=1):
         super(ResnetEncoder, self).__init__()
-
         self.num_ch_enc = np.array([64, 64, 128, 256, 512])
-
         resnets = {18: models.resnet18,
                    34: models.resnet34,
                    50: models.resnet50,
                    101: models.resnet101,
                    152: models.resnet152}
-
         if num_layers not in resnets:
             raise ValueError("{} is not a valid number of resnet layers".format(num_layers))
 
@@ -80,7 +75,6 @@ class ResnetEncoder(nn.Module):
             self.encoder = resnet_multiimage_input(num_layers, pretrained, num_input_images)
         else:
             self.encoder = resnets[num_layers](pretrained)
-
         if num_layers > 34:
             self.num_ch_enc[1:] *= 4
 
@@ -96,8 +90,6 @@ class ResnetEncoder(nn.Module):
         # self.features.append(self.encoder.layer4(self.features[-1]))
 
         return self.features
-
-
 class ResnetEncoder2(nn.Module):
     """Pytorch module for a resnet encoder
     """
