@@ -12,8 +12,11 @@ import matplotlib.cm as cm
 from R_MSFM import R_MSFM3,R_MSFM6
 import torch
 from torchvision import transforms, datasets
-
+import time
 import networks
+import time
+import shutil
+
 def disp_to_depth(disp, min_depth, max_depth):
     """Convert network's sigmoid output into depth prediction
     """
@@ -23,29 +26,14 @@ def disp_to_depth(disp, min_depth, max_depth):
     depth = 1 / scaled_disp
     return scaled_disp, depth
 
-
-
-
 def parse_args():
-    parser = argparse.ArgumentParser(
-        description='Simple testing funtion for R-MSFM models.')
-
-    parser.add_argument('--image_path', type=str,
-                        help='path to a test image or folder of images', required=True)
-
-    parser.add_argument('--ext', type=str,
-                        help='image extension to search for in folder', default="jpeg")
-    parser.add_argument('--model_path', type=str,
-                        help='path to a models.pth', default="./3M")
-    parser.add_argument('--update', type=int,
-                        help='iterative update', default=3)
-    parser.add_argument("--no_cuda",
-                        help='if set, disables CUDA',
-                        action='store_true')
-    parser.add_argument("--x",
-                        help='if set, R-MSFMX',
-                        action='store_true')
-    # a = ['--image_path', './a',  '--model_path',  './3M_gc_1024',  '--update', '3' ]
+    parser = argparse.ArgumentParser(description='Simple testing funtion for R-MSFM models.')
+    parser.add_argument('--image_path', type=str,help='path to a test image or folder of images', required=True)
+    parser.add_argument('--ext', type=str,help='image extension to search for in folder', default="jpeg")
+    parser.add_argument('--model_path', type=str,help='path to a models.pth', default="./3M")
+    parser.add_argument('--update', type=int,help='iterative update', default=3)
+    parser.add_argument("--no_cuda",help='if set, disables CUDA',action='store_true')
+    parser.add_argument("--x",help='if set, R-MSFMX',action='store_true')
     return parser.parse_args()
 
 
@@ -95,14 +83,21 @@ def test_simple(args):
     elif os.path.isdir(args.image_path):
         # Searching folder for images
         paths = glob.glob(os.path.join(args.image_path, '*.{}'.format(args.ext)))
-        output_directory = args.image_path
+        output_directory=os.path.join(args.image_path,'output')
     else:
         raise Exception("Can not find args.image_path: {}".format(args.image_path))
 
     print("-> Predicting on {:d} test images".format(len(paths)))
 
+    if os.path.exists(output_directory):
+
+        shutil.rmtree(output_directory)
+
+    os.makedirs(output_directory)
+    
     # PREDICTING ON EACH IMAGE IN TURN
     with torch.no_grad():
+        min_infer_time = 10
         for idx, image_path in enumerate(paths):
 
             if image_path.endswith("_disp.jpg"):
@@ -115,11 +110,20 @@ def test_simple(args):
             original_width, original_height = input_image.size
             input_image = input_image.resize((feed_width, feed_height), pil.LANCZOS)
             input_image = transforms.ToTensor()(input_image).unsqueeze(0)
-
+            
+            #torch.cuda.synchronize()
+            start = time.time()
             # PREDICTION
             input_image = input_image.to(device)
             features = encoder(input_image)
             outputs = depth_decoder(features)
+            #torch.cuda.synchronize()
+            end = time.time()
+            infer_time = end-start
+            
+
+            if infer_time < min_infer_time:
+                min_infer_time = infer_time
 
 
             if args.update == 3:
@@ -133,7 +137,7 @@ def test_simple(args):
             output_name = os.path.splitext(os.path.basename(image_path))[0]
             name_dest_npy = os.path.join(output_directory, "{}_disp.npy".format(output_name))
             scaled_disp, _ = disp_to_depth(disp, 0.1, 100)
-            np.save(name_dest_npy, scaled_disp.cpu().numpy())
+            #np.save(name_dest_npy, scaled_disp.cpu().numpy())
             
             # Saving colormapped depth image
             disp_resized_np = disp_resized.squeeze().cpu().numpy()
@@ -142,8 +146,6 @@ def test_simple(args):
             mapper = cm.ScalarMappable(norm=normalizer, cmap='magma')
             colormapped_im = (mapper.to_rgba(disp_resized_np)[:, :, :3] * 255).astype(np.uint8)
 
-
-            
             im = pil.fromarray(colormapped_im)
 
             name_dest_im = os.path.join(output_directory, "{}_disp.jpeg".format(output_name))
@@ -152,10 +154,16 @@ def test_simple(args):
             print("   Processed {:d} of {:d} images - saved prediction to {}".format(
                 idx + 1, len(paths), name_dest_im))
 
+    print('min_infer_time:', min_infer_time)
     print('-> Done!')
 
 
 if __name__ == '__main__':
     args = parse_args()
     test_simple(args)
+    
 
+'''
+python test_simple.py --image_path='/path/to/your/data/' --model_path='/path/to/your/model/' --update=6
+
+'''

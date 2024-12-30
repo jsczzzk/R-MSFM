@@ -95,7 +95,6 @@ class BasicUpdateBlock(nn.Module):
         self.encoder = BasicMotionEncoder()
 
         self.flow_head = dispHead()
-
         self.mask = nn.Sequential(
             nn.ReflectionPad2d(1),
             nn.Conv2d(192, 324, 3),
