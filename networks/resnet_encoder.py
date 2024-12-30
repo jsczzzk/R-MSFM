@@ -21,7 +21,7 @@ class ResNetMultiImageInput(models.ResNet):
     def __init__(self, block, layers, num_classes=1000, num_input_images=1):
         super(ResNetMultiImageInput, self).__init__(block, layers)
         self.inplanes = 64
-        self.conv1 = nn.Conv2d(num_input_images * 3, 64, kernel_size=7, stride=2, padding=3, bias=False)#步长2缩小一半
+        self.conv1 = nn.Conv2d(num_input_images * 3, 64, kernel_size=7, stride=2, padding=3, bias=False)
         self.bn1 = nn.BatchNorm2d(64)
         self.relu = nn.ReLU(inplace=True)
         self.maxpool = nn.MaxPool2d(kernel_size=3, stride=2, padding=1)
@@ -57,18 +57,17 @@ def resnet_multiimage_input(num_layers, pretrained=False, num_input_images=1):
         model.load_state_dict(loaded)
     return model
 
-#encoder = networks.ResnetEncoder(18, False)加载编码器
-#features = encoder(input_image)从编码器提取特征
+#encoder = networks.ResnetEncoder(18, False)
+#features = encoder(input_image)
 class ResnetEncoder(nn.Module):
-    def __init__(self, num_layers, pretrained, num_input_images=1):#层数18，pretrained为False不加载预训练模型
-        super(ResnetEncoder, self).__init__()#继承父类初始化方法
-        self.num_ch_enc = np.array([64, 64, 128, 256, 512])#五个阶段的通道数
+    def __init__(self, num_layers, pretrained, num_input_images=1):
+        super(ResnetEncoder, self).__init__()
+        self.num_ch_enc = np.array([64, 64, 128, 256, 512])
         resnets = {18: models.resnet18,
                    34: models.resnet34,
                    50: models.resnet50,
                    101: models.resnet101,
-                   152: models.resnet152}#字典
-
+                   152: models.resnet152}
         if num_layers not in resnets:
             raise ValueError("{} is not a valid number of resnet layers".format(num_layers))
 
@@ -77,21 +76,20 @@ class ResnetEncoder(nn.Module):
         else:
             self.encoder = resnets[num_layers](pretrained)
         if num_layers > 34:
-            self.num_ch_enc[1:] *= 4# self.num_ch_enc列表中第二个元素开始乘4
+            self.num_ch_enc[1:] *= 4
 
     def forward(self, input_image):
-        self.features = []#初始化列表存储特征图
-        x = (input_image - 0.45) / 0.225#对图片归一化
-        x = self.encoder.conv1(x)#编码器的conv1，1/2下采样
-        x = self.encoder.bn1(x)#批量归一化层
-        self.features.append(self.encoder.relu(x))#2倍下采样
-        self.features.append(self.encoder.layer1(self.encoder.maxpool(self.features[-1])))#对上一步得到的特征图最大池化，4倍下采样，经第一个残差块
-        self.features.append(self.encoder.layer2(self.features[-1]))#8倍下采样
+        self.features = []
+        x = (input_image - 0.45) / 0.225
+        x = self.encoder.conv1(x)
+        x = self.encoder.bn1(x)
+        self.features.append(self.encoder.relu(x))
+        self.features.append(self.encoder.layer1(self.encoder.maxpool(self.features[-1])))
+        self.features.append(self.encoder.layer2(self.features[-1]))
         # self.features.append(self.encoder.layer3(self.features[-1]))
         # self.features.append(self.encoder.layer4(self.features[-1]))
 
-        return self.features#列表self.features包含三个尺度的特征图
-
+        return self.features
 class ResnetEncoder2(nn.Module):
     """Pytorch module for a resnet encoder
     """
