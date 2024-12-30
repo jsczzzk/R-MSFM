@@ -10,6 +10,24 @@ Paper is now available at [ICCV2021](https://openaccess.thecvf.com/content/ICCV2
 ## Training code
 We will update the training code in the future, if there is any problem before then, please contact us. In addition, you can also refer to this [project](https://github.com/ZM-Zhou/SMDE-Pytorch) for the training code, which achieves better results than mine. Thank you for his nice code!
 
+## Training code
+You can train R-MSFM3 with:
+```shell
+python train.py --iters=3
+```
+or R-MSFM6 with
+```shell
+python train.py --iters=6
+```
+or R-MSFM3-GC with
+```shell
+python train.py --iters=3  --gc
+```
+or R-MSFM6-GC with
+```shell
+python train.py --iters=6  --gc
+```
+
 ## Improved Version(T-PAMI2024)
 Paper is now available at [T-PAMI2024](https://openaccess.thecvf.com/cohttps://ieeexplore.ieee.org/abstract/document/10574331).
 In this paper, we improve our R-MSFM from two aspects and achieve SOTA results.
