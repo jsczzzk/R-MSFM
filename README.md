@@ -26,7 +26,7 @@ python train.py --iters=6  --gc
 ```
 
 ## Improved Version(T-PAMI2024)
-Paper is now available at [T-PAMI2024](https://openaccess.thecvf.com/cohttps://ieeexplore.ieee.org/abstract/document/10574331).
+Paper is now available at [T-PAMI2024](https://ieeexplore.ieee.org/abstract/document/10574331).
 In this paper, we improve our R-MSFM from two aspects and achieve SOTA results.
 1.  We propose another lightweight convolutional network R-MSFMX that evolved from our R-MSFM to better address the problem of depth estimation. Our R-MSFMX takes the first three blocks from ResNet50 instead of ResNet18 in our R-MSFM and  further improves the depth accuracy.
 2.  We promote the geometry consistent depth learning for both our R-MSFM and R-MSFMX, which prevents the depth artifacts at object borders and thus generates more consistent depth. We denote the models that perform geometry consistent depth estimation by the postfix (GC).
