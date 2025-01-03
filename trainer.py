@@ -215,10 +215,10 @@ class Trainer:
         for key, ipt in inputs.items():
             inputs[key] = ipt.to(self.device)
         
-        if self.opt.gc:
+        
             features = self.models["encoder"](inputs["color_aug", 0, 0])
             outputs = self.models["depth"](features, iters = self.opt.iters)
-
+        if self.opt.gc:
             aa = self.models["encoder"](inputs["color_aug", -1, 0])
             bb = self.models["depth"](aa, iters = self.opt.iters)
             outputs_1 = {}
